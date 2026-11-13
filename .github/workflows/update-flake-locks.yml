@@ -43,6 +43,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.AUTO_PAT || github.token }}
           branch: chore/update-flake-locks
           delete-branch: true
           commit-message: "chore(flake): update template flake.lock files"
@@ -52,6 +53,6 @@ jobs:
       - name: Auto-merge pull request
         if: steps.cpr.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.AUTO_PAT || github.token }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
-        run: gh pr merge "$PR_NUMBER" --auto --squash --delete-branch || gh pr merge "$PR_NUMBER" --squash --delete-branch
+        run: gh pr merge "$PR_NUMBER" --auto --squash --delete-branch

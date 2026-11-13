@@ -1,0 +1,16 @@
+default:
+    @just --list
+
+build: test
+    mkdir -p build
+    gcc -Wall -Wextra -g -Iinclude src/*.c -o build/main
+
+run: build
+    ./build/main
+
+test target="all":
+    ceedling test:{{target}}
+
+clean:
+    ceedling clobber
+    rm -rf build

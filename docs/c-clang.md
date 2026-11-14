@@ -9,7 +9,7 @@ For the GCC variant, see [C (GCC)](../c-gcc/).
 
 ## Toolchain & Dependencies
 
-Provided declaratively via `c-clang/flake.nix` (`llvmPackages_23.stdenv`) across `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`:
+Provided declaratively via `c/clang/flake.nix` (`llvmPackages_23.stdenv`) across `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`:
 
 - **`clang` 23 (`llvmPackages_23.stdenv`), `lldb` 23 & `gdb`**: Compiler and debuggers (`lldb` recommended on macOS).
 - **Ceedling `1.2.2`** (Unity `2.7.2`, CMock `2.7.2`, CException `1.3.5`): Packaged via `pkgs.bundlerEnv` from `Gemfile`, `Gemfile.lock`, and `gemset.nix` and configured in `project.yml` to use `clang`.

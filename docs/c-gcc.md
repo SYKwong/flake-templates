@@ -9,7 +9,7 @@ For the Clang variant, see [C (Clang)](../c-clang/).
 
 ## Toolchain & Dependencies
 
-Provided declaratively via `c-gcc/flake.nix` (`gcc16Stdenv`) across `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`:
+Provided declaratively via `c/gcc/flake.nix` (`gcc16Stdenv`) across `x86_64-linux`, `aarch64-linux`, and `aarch64-darwin`:
 
 - **`gcc` 16 (`gcc16Stdenv`) & `gdb`**: Compiler and debugger.
 - **Ceedling `1.2.2`** (Unity `2.7.2`, CMock `2.7.2`, CException `1.3.5`): Packaged via `pkgs.bundlerEnv` from `Gemfile`, `Gemfile.lock`, and `gemset.nix`.

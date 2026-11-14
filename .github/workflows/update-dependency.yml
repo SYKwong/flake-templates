@@ -1,4 +1,4 @@
-name: Update flake.lock
+name: Update dependencies
 
 on:
   schedule:
@@ -61,7 +61,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.AUTO_PAT || github.token }}
-          branch: chore/update-flake-locks
+          branch: chore/update-dependencies
           delete-branch: true
           commit-message: "chore(deps): update flake.lock and patch gem dependencies"
           title: "chore(deps): update flake.lock and patch gem dependencies"

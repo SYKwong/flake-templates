@@ -13,3 +13,5 @@ direnv allow
 ## Available Templates
 
 - `c`: C playground with Ceedling (`ceedling test:all`), `gcc`, `gdb`, `just`, and `compile_commands.json` generation for `clangd`.
+
+Documentation: https://nix.kyle-kwong.com/templates/

@@ -24,7 +24,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  ceedling
+  ceedling (~> 1.2.2)
 
 BUNDLED WITH
    2.6.9

@@ -1,0 +1,95 @@
+name: Check major version updates
+
+on:
+  schedule:
+    - cron: "0 10 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-major:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Check Ceedling major/minor version
+        run: |
+          latest=$(curl -fsSL https://rubygems.org/api/v1/versions/ceedling/latest.json | nix develop ./c-clang --command ruby -rjson -e 'puts JSON.parse(STDIN.read)["version"]')
+          for dir in c-clang c-gcc; do
+            current=$(grep -E 'gem "ceedling"' "${dir}/Gemfile" | sed -E 's/.*"~> ([^"]+)".*/\1/')
+            echo "${dir} Ceedling: current ~> ${current}, latest ${latest}"
+            should_bump=$(nix develop "./${dir}" --command ruby -e "
+              cur_mm = Gem::Version.new('${current}'.split('.').first(2).join('.'))
+              lat_mm = Gem::Version.new('${latest}'.split('.').first(2).join('.'))
+              puts (lat_mm > cur_mm)
+            ")
+            if [ "$should_bump" = "true" ]; then
+              sed -i -E "s|gem \"ceedling\", \"~> [^\"]+\"|gem \"ceedling\", \"~> ${latest}\"|" "${dir}/Gemfile"
+              nix develop "./${dir}" --command just -f "${dir}/justfile" -d "${dir}" update-gems
+            fi
+          done
+
+      - name: Check compiler major versions
+        run: |
+          eval_out=$(nix eval --raw --impure --expr '
+            let
+              pkgs = import (builtins.getFlake ("path:" + toString ./c-clang)).inputs.nixpkgs { system = "x86_64-linux"; };
+              llvmNums = map (n: builtins.fromJSON (builtins.elemAt (builtins.match "llvmPackages_([0-9]+)" n) 0))
+                (builtins.filter (n: builtins.match "llvmPackages_[0-9]+" n != null) (builtins.attrNames pkgs));
+              gccNums = map (n: builtins.fromJSON (builtins.elemAt (builtins.match "gcc([0-9]+)Stdenv" n) 0))
+                (builtins.filter (n: builtins.match "gcc[0-9]+Stdenv" n != null) (builtins.attrNames pkgs));
+              max = builtins.foldl'\'' (a: b: if b > a then b else a) 0;
+            in "LATEST_LLVM=${toString (max llvmNums)} LATEST_GCC=${toString (max gccNums)}"
+          ')
+          eval "$eval_out"
+          current_llvm=$(grep -oE 'llvmPackages_[0-9]+' c-clang/flake.nix | head -n1 | cut -d_ -f2)
+          current_gcc=$(grep -oE 'gcc[0-9]+Stdenv' c-gcc/flake.nix | head -n1 | sed -E 's/gcc([0-9]+)Stdenv/\1/')
+          echo "LLVM: current ${current_llvm}, latest ${LATEST_LLVM}"
+          echo "GCC:  current ${current_gcc}, latest ${LATEST_GCC}"
+          if [ "$LATEST_LLVM" -gt "$current_llvm" ]; then
+            sed -i -E "s/llvmPackages_${current_llvm}/llvmPackages_${LATEST_LLVM}/g" c-clang/flake.nix c-clang/README.md docs/c-clang.md
+            sed -i -E "s/Clang ${current_llvm}/Clang ${LATEST_LLVM}/g" c-clang/README.md docs/c-clang.md
+          fi
+          if [ "$LATEST_GCC" -gt "$current_gcc" ]; then
+            sed -i -E "s/gcc${current_gcc}Stdenv/gcc${LATEST_GCC}Stdenv/g" c-gcc/flake.nix docs/c-gcc.md
+            sed -i -E "s/GCC ${current_gcc}/GCC ${LATEST_GCC}/g" c-gcc/README.md docs/c-gcc.md
+          fi
+
+      - name: Verify flake outputs
+        run: |
+          nix flake show --all-systems
+          for dir in */; do
+            if [ -f "${dir}flake.nix" ]; then
+              nix flake show --all-systems "./${dir}"
+            fi
+          done
+
+      - name: Test C (Clang) template
+        run: |
+          nix develop ./c-clang --command just -f c-clang/justfile -d c-clang run
+          nix develop ./c-clang --command just -f c-clang/justfile -d c-clang clean
+
+      - name: Test C (GCC) template
+        run: |
+          nix develop ./c-gcc --command just -f c-gcc/justfile -d c-gcc run
+          nix develop ./c-gcc --command just -f c-gcc/justfile -d c-gcc clean
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.AUTO_PAT || github.token }}
+          branch: chore/update-major-versions
+          delete-branch: true
+          commit-message: "chore(deps): update major toolchain or Ceedling versions"
+          title: "chore(deps): update major toolchain or Ceedling versions"
+          body: |
+            Automated weekly check for major/minor version updates (Ceedling, Clang, GCC).
+            Verified with `nix flake show --all-systems` and `just run` on both `c-clang` and `c-gcc`.
+            Auto-merge is intentionally disabled — please review changelog and breaking changes before merging.

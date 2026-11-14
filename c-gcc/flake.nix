@@ -1,5 +1,5 @@
 {
-  description = "C playground with Ceedling (Unity + CMock)";
+  description = "C (GCC) playground with Ceedling (Unity + CMock), gcc, gdb, and just";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -26,13 +26,13 @@
             ruby = pkgs.ruby;
             gemdir = ./.;
           };
+          mkGccShell = pkgs.mkShell.override { stdenv = pkgs.gcc16Stdenv; };
         in
         {
-          default = pkgs.mkShell {
+          default = mkGccShell {
             packages = [
               rubyEnv
               rubyEnv.wrappedRuby
-              pkgs.gcc
               pkgs.gdb
               pkgs.just
             ];

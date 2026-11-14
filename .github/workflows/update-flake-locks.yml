@@ -28,7 +28,16 @@ jobs:
             fi
           done
 
-      - name: Verify template flakes
+      - name: Update template Ruby gems
+        run: |
+          for dir in */; do
+            if [ -f "${dir}Gemfile" ]; then
+              echo "Updating ${dir}Gemfile.lock and ${dir}gemset.nix..."
+              nix develop "./${dir}" --command just -f "${dir}justfile" -d "${dir}" update-gems
+            fi
+          done
+
+      - name: Verify flake outputs
         run: |
           nix flake show --all-systems
           for dir in */; do
@@ -36,8 +45,16 @@ jobs:
               nix flake show --all-systems "./${dir}"
             fi
           done
-          nix develop ./c --command just -f c/justfile -d c run
-          nix develop ./c --command just -f c/justfile -d c clean
+
+      - name: Test C (Clang) template
+        run: |
+          nix develop ./c-clang --command just -f c-clang/justfile -d c-clang run
+          nix develop ./c-clang --command just -f c-clang/justfile -d c-clang clean
+
+      - name: Test C (GCC) template
+        run: |
+          nix develop ./c-gcc --command just -f c-gcc/justfile -d c-gcc run
+          nix develop ./c-gcc --command just -f c-gcc/justfile -d c-gcc clean
 
       - name: Create pull request
         id: cpr
@@ -46,9 +63,9 @@ jobs:
           token: ${{ secrets.AUTO_PAT || github.token }}
           branch: chore/update-flake-locks
           delete-branch: true
-          commit-message: "chore(flake): update template flake.lock files"
-          title: "chore(flake): update template flake.lock files"
-          body: "Automated weekly `nix flake update` for all template flakes (verified with `nix flake show --all-systems` and `just run`)."
+          commit-message: "chore(deps): update flake.lock and patch gem dependencies"
+          title: "chore(deps): update flake.lock and patch gem dependencies"
+          body: "Automated weekly `nix flake update` and patch Ruby gem updates (`just update-gems`) for all template flakes (verified with `nix flake show --all-systems` and `just run`)."
 
       - name: Auto-merge pull request
         if: steps.cpr.outputs.pull-request-number != ''

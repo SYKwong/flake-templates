@@ -10,21 +10,15 @@ description: Reusable Nix flake project templates for playgrounds and projects.
 Create a new project from a template:
 
 ```bash
-# Local clone
-nix flake new -t ~/Templates/flake-templates#c-clang ~/Projects/playground/my-c-test
-
-# Remote (GitHub)
-nix flake new -t github:SYKwong/flake-templates#c-clang ~/Projects/playground/my-c-test
+nix flake new -t github:SYKwong/flake-templates#c-clang my-c-test
 ```
 
 Enter the project directory and activate the environment:
 
 ```bash
-cd ~/Projects/playground/my-c-test
+cd my-c-test
 direnv allow
 ```
-
-> Directories under `~/Projects/playground` and `~/Templates` are whitelisted in `direnv` when using the `nix-config` Home Manager setup.
 
 ## Available Templates
 

@@ -22,12 +22,7 @@ Self-contained, system-agnostic Nix flake project templates for playgrounds and 
 Create a new project from a template:
 
 ```bash
-# Local clone
-nix flake new -t ~/Templates/flake-templates#c-clang ~/Projects/playground/my-c-test
-
-# Remote (GitHub)
-nix flake new -t github:SYKwong/flake-templates#c-clang ~/Projects/playground/my-c-test
-
-cd ~/Projects/playground/my-c-test
+nix flake new -t github:SYKwong/flake-templates#c-clang my-c-test
+cd my-c-test
 direnv allow
 ```

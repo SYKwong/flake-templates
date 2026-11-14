@@ -5,7 +5,7 @@ description: System-agnostic C (GCC) playground with Ceedling 1.2.2 (Unity + CMo
 
 The `c-gcc` template scaffolds a self-contained C playground with unit testing, mocking, standalone compilation via `gcc`, and LSP integration.
 
-For the Clang variant, see [C (Clang)](../c-clang/).
+For the Clang variant, see [C (Clang)](../clang/).
 
 ## Toolchain & Dependencies
 

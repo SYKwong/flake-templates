@@ -54,13 +54,13 @@ jobs:
           echo "LLVM: current ${current_llvm}, latest ${LATEST_LLVM}"
           echo "GCC:  current ${current_gcc}, latest ${LATEST_GCC}"
           if [ "$LATEST_LLVM" -gt "$current_llvm" ]; then
-            sed -i -E "s/llvmPackages_${current_llvm}/llvmPackages_${LATEST_LLVM}/g" c/clang/flake.nix docs/c-clang.md
-            sed -i -E "s/Clang ${current_llvm}/Clang ${LATEST_LLVM}/g" c/README.md docs/c-clang.md
+            sed -i -E "s/llvmPackages_${current_llvm}/llvmPackages_${LATEST_LLVM}/g" c/clang/flake.nix docs/c/clang.md
+            sed -i -E "s/Clang ${current_llvm}/Clang ${LATEST_LLVM}/g" c/README.md docs/c/clang.md
             sed -i -E 's/`clang` '"${current_llvm}"'/`clang` '"${LATEST_LLVM}"'/g' c/README.md README.md docs/index.md
           fi
           if [ "$LATEST_GCC" -gt "$current_gcc" ]; then
-            sed -i -E "s/gcc${current_gcc}Stdenv/gcc${LATEST_GCC}Stdenv/g" c/gcc/flake.nix docs/c-gcc.md
-            sed -i -E "s/GCC ${current_gcc}/GCC ${LATEST_GCC}/g" c/README.md docs/c-gcc.md
+            sed -i -E "s/gcc${current_gcc}Stdenv/gcc${LATEST_GCC}Stdenv/g" c/gcc/flake.nix docs/c/gcc.md
+            sed -i -E "s/GCC ${current_gcc}/GCC ${LATEST_GCC}/g" c/README.md docs/c/gcc.md
             sed -i -E 's/`gcc` '"${current_gcc}"'/`gcc` '"${LATEST_GCC}"'/g' c/README.md README.md docs/index.md
           fi
 

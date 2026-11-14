@@ -1,4 +1,4 @@
-name: Update major versions
+name: Update major dependency
 
 on:
   schedule:
@@ -87,7 +87,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.AUTO_PAT || github.token }}
-          branch: chore/update-major-versions
+          branch: chore/update-major-dependency
           delete-branch: true
           commit-message: "chore(deps): update major toolchain or Ceedling versions"
           title: "chore(deps): update major toolchain or Ceedling versions"

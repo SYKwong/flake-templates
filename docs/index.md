@@ -37,4 +37,4 @@ direnv allow
 
 - **PR Checks (`.github/workflows/ci.yml`)**: Validates `nix flake show --all-systems` across the root flake and every template `flake.nix`, and runs `just run` in `c/clang/` and `c/gcc/`.
 - **Weekly `flake.lock` & Patch Gem Updates (`.github/workflows/update-dependency.yml`)**: Runs `nix flake update` and `just update-gems` (constrained to `~> 1.2.2` patch versions in `Gemfile`), verifies all checks pass, opens a PR, and auto-merges via squash merge.
-- **Weekly Major/Minor Version Checks (`.github/workflows/update-major-versions.yml`)**: Checks for major/minor Ceedling updates and major Clang (`llvmPackages_<N>`) / GCC (`gcc<N>Stdenv`) updates, verifies tests pass, and opens a PR without auto-merge for manual review.
+- **Weekly Major/Minor Dependency Checks (`.github/workflows/update-major-dependency.yml`)**: Checks for major/minor Ceedling updates and major Clang (`llvmPackages_<N>`) / GCC (`gcc<N>Stdenv`) updates, verifies tests pass, and opens a PR without auto-merge for manual review.

@@ -1,4 +1,4 @@
-name: Check major version updates
+name: Update major versions
 
 on:
   schedule:

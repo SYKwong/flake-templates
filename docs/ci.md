@@ -32,7 +32,7 @@ All automation workflows live in `.github/workflows/` and run on `ubuntu-latest`
 Runs 1 hour after `update-dependency.yml` (Mondays 10:00 UTC) so `flake.lock` is already fresh:
 
 1. **Ceedling (`MAJOR.MINOR`)**: Queries `https://rubygems.org/api/v1/versions/ceedling/latest.json`. If `latest` has a newer `MAJOR.MINOR` than `c/clang/Gemfile` or `c/gcc/Gemfile`, updates the `~> <latest>` constraint and runs `just update-gems`.
-2. **Compilers (`Clang` / `GCC` major)**: Evaluates `c/clang`'s `nixpkgs` for the newest `llvmPackages_<N>` and `gcc<N>Stdenv`. If newer than the pinned versions in `c/clang/flake.nix` or `c/gcc/flake.nix`, updates the Nix expressions and docs (`README.md`, `c/README.md`, `docs/c-clang.md`, `docs/c-gcc.md`).
+2. **Compilers (`Clang` / `GCC` major)**: Evaluates `c/clang`'s `nixpkgs` for the newest `llvmPackages_<N>` and `gcc<N>Stdenv`. If newer than the pinned versions in `c/clang/flake.nix` or `c/gcc/flake.nix`, updates the Nix expressions and docs (`README.md`, `c/README.md`, `docs/c/clang.md`, `docs/c/gcc.md`).
 3. Verifies `nix flake show --all-systems` and runs `just run` + `just clean` on `c/clang` and `c/gcc`.
 4. Opens a PR on `chore/update-dependency-major-minor-version` **without auto-merge**.
 

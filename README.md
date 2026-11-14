@@ -12,8 +12,8 @@ Self-contained, system-agnostic Nix flake project templates for playgrounds and 
 
 | Template | Description | Guide |
 | :--- | :--- | :--- |
-| **`c-clang`** | C (Clang) playground with Ceedling `1.2.2` (Unity + CMock), `clang` 23, `lldb`/`gdb`, `just`, and `clangd` | [`docs/c-clang.md`](https://nix.kyle-kwong.com/templates/c-clang/) |
-| **`c-gcc`** | C (GCC) playground with Ceedling `1.2.2` (Unity + CMock), `gcc` 16, `gdb`, `just`, and `clangd` | [`docs/c-gcc.md`](https://nix.kyle-kwong.com/templates/c-gcc/) |
+| **`c-clang`** | C (Clang) playground with Ceedling `1.2.2` (Unity + CMock), `clang` 23, `lldb`/`gdb`, `just`, and `clangd` | [`docs/c/clang.md`](https://nix.kyle-kwong.com/templates/c/clang/) |
+| **`c-gcc`** | C (GCC) playground with Ceedling `1.2.2` (Unity + CMock), `gcc` 16, `gdb`, `just`, and `clangd` | [`docs/c/gcc.md`](https://nix.kyle-kwong.com/templates/c/gcc/) |
 
 ---
 

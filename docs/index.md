@@ -10,29 +10,23 @@ description: Reusable Nix flake project templates for playgrounds and projects.
 Create a new project from a template:
 
 ```bash
-# Local clone
-nix flake new -t ~/Templates/flake-templates#c ~/Projects/playground/my-c-test
-
-# Remote (GitHub)
-nix flake new -t github:SYKwong/flake-templates#c ~/Projects/playground/my-c-test
+nix flake new -t github:SYKwong/flake-templates#c-clang my-c-test
 ```
 
 Enter the project directory and activate the environment:
 
 ```bash
-cd ~/Projects/playground/my-c-test
+cd my-c-test
 direnv allow
 ```
-
-> Directories under `~/Projects/playground` and `~/Templates` are whitelisted in `direnv` when using the `nix-config` Home Manager setup.
 
 ## Available Templates
 
 | Template | Description | Guide |
 | :--- | :--- | :--- |
-| `c` | C playground with Ceedling 1.2.2 (Unity + CMock), `gcc`, `gdb`, `just`, and `clangd` | [C Playground](./c/) |
+| `c-clang` | C (Clang) playground with Ceedling 1.2.2 (Unity + CMock), `clang` 23, `lldb`/`gdb`, `just`, and `clangd` | [C (Clang)](./c-clang/) |
+| `c-gcc` | C (GCC) playground with Ceedling 1.2.2 (Unity + CMock), `gcc` 16, `gdb`, `just`, and `clangd` | [C (GCC)](./c-gcc/) |
 
 ## Repository Automation
 
-- **PR Checks (`.github/workflows/ci.yml`)**: Validates `nix flake show --all-systems` across the root flake and every `*/flake.nix`, and runs `just run` in `c/`.
-- **Weekly `flake.lock` Updates (`.github/workflows/update-flake-locks.yml`)**: Runs `nix flake update` on every `*/flake.lock`, verifies all checks pass, opens a PR, and auto-merges via squash merge.
+See [CI & Automation](./ci/) for details on PR checks (`ci.yml`), weekly patch/lockfile auto-updates (`update-dependency.yml`), manual-review major/minor version checks (`update-dependency-major-minor-version.yml`), and docs site sync (`notify-docs.yml`).

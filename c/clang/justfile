@@ -1,0 +1,19 @@
+default:
+    @just --list
+
+build: test
+    mkdir -p build
+    clang -Wall -Wextra -g -Iinclude src/*.c -o build/main
+
+run: build
+    ./build/main
+
+test target="all":
+    ceedling test:{{target}}
+
+clean:
+    ceedling clobber
+    rm -rf build
+
+update-gems:
+    nix shell nixpkgs#ruby nixpkgs#bundler nixpkgs#bundix --command bash -c "bundle lock --update && bundle lock --add-platform x86_64-linux aarch64-linux arm64-darwin && bundix"

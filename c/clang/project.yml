@@ -1,0 +1,63 @@
+:project:
+  :use_exceptions: FALSE
+  :use_test_preprocessor: :all
+  :use_auxiliary_dependencies: TRUE
+  :build_root: build
+  :test_file_prefix: test_
+  :which_ceedling: gem
+  :default_tasks:
+    - test:all
+
+:environment:
+
+:extension:
+  :executable: .out
+
+:paths:
+  :test:
+    - +:test/**
+  :source:
+    - src/**
+  :include:
+    - include/**
+
+:defines:
+  :common: &common_defines []
+  :test:
+    - *common_defines
+    - TEST
+  :test_preprocess:
+    - *common_defines
+    - TEST
+
+:tools:
+  :test_compiler:
+    :executable: clang
+  :test_linker:
+    :executable: clang
+  :test_bare_includes_preprocessor:
+    :executable: clang
+  :test_file_directives_only_preprocessor:
+    :executable: clang
+  :test_file_full_preprocessor:
+    :executable: clang
+
+:cmock:
+  :mock_prefix: mock_
+  :when_no_prototypes: :warn
+  :enforce_strict_ordering: TRUE
+  :plugins:
+    - :ignore
+    - :callback
+  :treat_as:
+    uint8: HEX8
+    uint16: HEX16
+    uint32: UINT32
+    int8: INT8
+    bool: UINT8
+
+:plugins:
+  :load_paths: []
+  :enabled:
+    - report_tests_pretty_stdout
+    - compile_commands_json_db

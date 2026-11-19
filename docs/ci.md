@@ -7,12 +7,12 @@ All automation workflows live in `.github/workflows/` and run on `ubuntu-latest`
 
 ## Workflows Overview
 
-| Workflow | File | Trigger | Auto-Merge | Purpose |
-| :--- | :--- | :--- | :--- | :--- |
-| **CI** | `ci.yml` | PRs to `main`, `workflow_dispatch` | — | Validates flake outputs and runs template smoke tests |
-| **Update dependency** | `update-dependency.yml` | Weekly (Mon 09:00 UTC), `workflow_dispatch` | Yes (squash) | Updates `flake.lock` files and patch Ruby gems |
-| **Update dependency major minor version** | `update-dependency-major-minor-version.yml` | Weekly (Mon 10:00 UTC), `workflow_dispatch` | No | Checks for major/minor Ceedling and major compiler bumps |
-| **Notify Docs Site** | `notify-docs.yml` | Push to `main` (`docs/**`) | — | Triggers `SYKwong/nix-docs` rebuild via `repository_dispatch` |
+| Workflow                                  | File                                        | Trigger                                     | Auto-Merge   | Purpose                                                       |
+| :---------------------------------------- | :------------------------------------------ | :------------------------------------------ | :----------- | :------------------------------------------------------------ |
+| **CI**                                    | `ci.yml`                                    | PRs to `main`, `workflow_dispatch`          | —            | Validates flake outputs and runs template smoke tests         |
+| **Update dependency**                     | `update-dependency.yml`                     | Weekly (Mon 09:00 UTC), `workflow_dispatch` | Yes (squash) | Updates `flake.lock` files and patch Ruby gems                |
+| **Update dependency major minor version** | `update-dependency-major-minor-version.yml` | Weekly (Mon 10:00 UTC), `workflow_dispatch` | No           | Checks for major/minor Ceedling and major compiler bumps      |
+| **Notify Docs Site**                      | `notify-docs.yml`                           | Push to `main` (`docs/**`)                  | —            | Triggers `SYKwong/nix-docs` rebuild via `repository_dispatch` |
 
 ## 1. PR Checks (`ci.yml`)
 

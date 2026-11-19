@@ -39,15 +39,15 @@ Provided declaratively via `c/clang/flake.nix` (`llvmPackages_23.stdenv`) across
 
 ## Task Runner (`justfile`)
 
-| Command | Action |
-| :--- | :--- |
-| `just` | Lists available recipes |
-| `just test` | Runs `ceedling test:all` and updates `compile_commands.json` |
-| `just test <target>` | Runs a single test suite (e.g. `just test test_example.c` or `just test example`) |
-| `just build` | Runs `just test` (must pass), then compiles `src/*.c` with `clang -Wall -Wextra -g -Iinclude` into `build/main` |
-| `just run` | Runs `just build`, then executes `./build/main` |
-| `just clean` | Runs `ceedling clobber` and removes `build/` |
-| `just update-gems` | Updates `Gemfile.lock` and regenerates `gemset.nix` via `bundler` + `bundix` |
+| Command              | Action                                                                                                          |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `just`               | Lists available recipes                                                                                         |
+| `just test`          | Runs `ceedling test:all` and updates `compile_commands.json`                                                    |
+| `just test <target>` | Runs a single test suite (e.g. `just test test_example.c` or `just test example`)                               |
+| `just build`         | Runs `just test` (must pass), then compiles `src/*.c` with `clang -Wall -Wextra -g -Iinclude` into `build/main` |
+| `just run`           | Runs `just build`, then executes `./build/main`                                                                 |
+| `just clean`         | Runs `ceedling clobber` and removes `build/`                                                                    |
+| `just update-gems`   | Updates `Gemfile.lock` and regenerates `gemset.nix` via `bundler` + `bundix`                                    |
 
 ## Editor & LSP Setup (`clangd`)
 

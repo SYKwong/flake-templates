@@ -29,6 +29,7 @@
 
           programs = {
             deadnix.enable = true;
+            just.enable = true;
             nixfmt.enable = true;
             prettier = {
               enable = true;

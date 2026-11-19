@@ -26,3 +26,16 @@ nix flake new -t github:SYKwong/flake-templates#c-clang my-c-test
 cd my-c-test
 direnv allow
 ```
+
+---
+
+## Development
+
+Common repository tasks are defined in [`justfile`](./justfile) (`just --list`):
+
+```bash
+just format         # Format Markdown, Nix, and justfiles via treefmt-nix
+just check          # Run nix flake check and validate root + template flakes
+just test           # Smoke-test all language templates in their devShells
+just update-flakes  # Update root and template flake.lock files
+```

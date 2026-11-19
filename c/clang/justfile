@@ -9,7 +9,7 @@ run: build
     ./build/main
 
 test target="all":
-    ceedling test:{{target}}
+    ceedling test:{{ target }}
 
 clean:
     ceedling clobber

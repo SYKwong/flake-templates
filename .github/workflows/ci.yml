@@ -18,6 +18,9 @@ jobs:
       - name: Check root flake
         run: nix flake show --all-systems
 
+      - name: Check formatting
+        run: nix flake check
+
       - name: Check template flakes
         run: |
           for f in */flake.nix */*/flake.nix; do

@@ -10,7 +10,11 @@
   };
 
   outputs =
-    { nixpkgs, treefmt-nix, ... }:
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
     let
       systems = [
         "x86_64-linux"
@@ -18,18 +22,33 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      treefmtEval = forAllSystems (
+        system:
+        treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
+          projectRootFile = "flake.nix";
+
+          programs = {
+            deadnix.enable = true;
+            nixfmt.enable = true;
+            prettier = {
+              enable = true;
+              includes = [ "*.md" ];
+            };
+            statix.enable = true;
+          };
+
+          settings.global.excludes = [
+            "**/gemset.nix"
+          ];
+        }
+      );
     in
     {
-      formatter = forAllSystems (
-        system:
-        (treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} {
-          projectRootFile = "flake.nix";
-          programs.prettier = {
-            enable = true;
-            includes = [ "*.md" ];
-          };
-        }).config.build.wrapper
-      );
+      formatter = forAllSystems (system: treefmtEval.${system}.config.build.wrapper);
+
+      checks = forAllSystems (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+      });
 
       templates = {
         c-clang = {

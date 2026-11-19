@@ -11,11 +11,7 @@
         "aarch64-linux"
         "aarch64-darwin"
       ];
-      forAllSystems =
-        f:
-        nixpkgs.lib.genAttrs systems (
-          system: f (import nixpkgs { inherit system; })
-        );
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f (import nixpkgs { inherit system; }));
     in
     {
       devShells = forAllSystems (
@@ -23,7 +19,7 @@
         let
           rubyEnv = pkgs.bundlerEnv {
             name = "ceedling-ruby-env";
-            ruby = pkgs.ruby;
+            inherit (pkgs) ruby;
             gemdir = ./.;
           };
           mkGccShell = pkgs.mkShell.override { stdenv = pkgs.gcc16Stdenv; };

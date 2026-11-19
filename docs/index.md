@@ -37,4 +37,11 @@ Both the root flake and individual templates intentionally track `nixpkgs/nixos-
 
 ## Repository Automation
 
+Use `just` from the repository root for common local tasks (`just --list` for all recipes):
+
+- `just format` — format Markdown, Nix, and `justfile`s via `treefmt-nix`
+- `just check` — run `nix flake check` and `nix flake show --all-systems` across the root and all templates
+- `just test` — smoke-test `c/clang` and `c/gcc` inside their `nix develop` shells
+- `just update-flakes` — update root and template `flake.lock` files
+
 See [CI & Automation](./ci/) for details on PR checks (`ci.yml`), weekly patch/lockfile auto-updates (`update-dependency.yml`), manual-review major/minor version checks (`update-dependency-major-minor-version.yml`), and docs site sync (`notify-docs.yml`).

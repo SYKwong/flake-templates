@@ -9,7 +9,7 @@ All automation workflows live in `.github/workflows/` and run on `ubuntu-latest`
 
 | Workflow                                  | File                                        | Trigger                                     | Auto-Merge   | Purpose                                                       |
 | :---------------------------------------- | :------------------------------------------ | :------------------------------------------ | :----------- | :------------------------------------------------------------ |
-| **CI**                                    | `ci.yml`                                    | PRs to `main`, `workflow_dispatch`          | —            | Validates flake outputs and runs template smoke tests         |
+| **CI**                                    | `ci.yml`                                    | PRs to `main`, `workflow_dispatch`          | —            | Validates formatting, flake outputs, and template smoke tests |
 | **Update dependency**                     | `update-dependency.yml`                     | Weekly (Mon 09:00 UTC), `workflow_dispatch` | Yes (squash) | Updates `flake.lock` files and patch Ruby gems                |
 | **Update dependency major minor version** | `update-dependency-major-minor-version.yml` | Weekly (Mon 10:00 UTC), `workflow_dispatch` | No           | Checks for major/minor Ceedling and major compiler bumps      |
 | **Notify Docs Site**                      | `notify-docs.yml`                           | Push to `main` (`docs/**`)                  | —            | Triggers `SYKwong/nix-docs` rebuild via `repository_dispatch` |
@@ -17,8 +17,9 @@ All automation workflows live in `.github/workflows/` and run on `ubuntu-latest`
 ## 1. PR Checks (`ci.yml`)
 
 1. Runs `nix flake show --all-systems` on the root flake.
-2. Evaluates `nix flake show --all-systems` on every template (`*/flake.nix` and `*/*/flake.nix`).
-3. Executes `just run` in `c/clang/` and `c/gcc/` inside their respective `nix develop` shells.
+2. Runs `nix flake check` to verify formatting (`treefmt-nix`: `prettier` for Markdown, `nixfmt`, `deadnix`, and `statix`).
+3. Evaluates `nix flake show --all-systems` on every template (`*/flake.nix` and `*/*/flake.nix`).
+4. Executes `just run` in `c/clang/` and `c/gcc/` inside their respective `nix develop` shells.
 
 ## 2. Patch & Lockfile Updates (`update-dependency.yml`)
 
